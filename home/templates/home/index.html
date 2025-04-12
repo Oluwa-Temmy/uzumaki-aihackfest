@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h2">Transform</h1>
+<p class="lead">Transform, Update your code to something better</p>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Python 2.13</h5>
+            <p class="card-text">Some quick example content.</p>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Python 3.13</h5>
+            <p class="card-text">More card content here.</p>
+        </div>
+        </div>
+    </div>
+</div>
+
+<a class="h2" href="{% url "trans_web" %}">Extract HTML from an image</a>
+<p class="lead"></p>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Facebook Homepage</h5>
+            <p class="card-text">Some quick example content.</p>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">HTML</h5>
+            <p class="card-text">More card content here.</p>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

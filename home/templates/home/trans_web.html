@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<form action="{% url "trans_web" %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}    
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload your file</label>
+    <div id="dropZone" class="rounded border border-primary p-4 text-center">
+        Drag and drop a file here or click to select
+    </div>
+    <div id="errorMessage" class="alert alert-danger d-none mt-2"></div>
+    <input
+        type="file"
+        id="formFile"
+        name="file"
+        class="d-none"
+        accept="image/jpeg,image/png,application/pdf"
+    />
+      <div class="progress d-none mb-3">
+        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+      </div>
+      <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<div class="previewWindow border border-primary rounded p-4 mt-3" >
+    Preview will appear here
+    {% if data %}
+        {{ data }}
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block js_body %}
+<script src="{% static "js/home.js" %}"></script>
+{% endblock js_body %}
