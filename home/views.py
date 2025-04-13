@@ -68,7 +68,7 @@ def trans_web(request):
         if data is not None:
             image = Image.open(data)
             prompt = f"""
-                Translate this image to HTML, Javascript, React seperated by: <!--Seperate-->
+                Translate this image to HTML, Javascript, React in that order seperated by: <!--Seperate-->
                 
                 Do not describe it simply just provide html for this image
                 Please add comments to the code for just describing different parts of the code.
@@ -88,8 +88,9 @@ def trans_web(request):
             raw_html = response.text
             cleaned = re.sub(r'^```html\s*', '', raw_html.strip(), flags=re.IGNORECASE)
             html = re.sub(r'```$', '', cleaned.strip())
-            lang = html.split('<!--Seperate-->')[1]
-            print(html.split('<!--Seperate-->')[1])
+            lang = html
+            html = html.split('<!--Seperate-->')[0]
+            print(html)
         return render(request, 'home/trans_web.html', context={
             "data": data,
             "html": html,
@@ -99,10 +100,28 @@ def trans_web(request):
 
 from django.http import HttpResponse
 from datetime import datetime
+import zipfile
+import io
+
 def download(request):
-    content = "<html><body><h1>Hello from Django!</h1></body></html>"
-    response = HttpResponse(content, content_type='text/html')
-    response['Content-Disposition'] = f'attachment; filename="code-{datetime.now().isoformat()}.html"'
-    return response
+    if request.method == 'POST':
+        code = request.POST.get('code', '')
+        selected_formats = request.POST.getlist('format')
+        print(selected_formats)
+
+        if not selected_formats or not code:
+            return HttpResponse("No format or code provided.", status=400)
+
+        # Create an in-memory ZIP file
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w') as zf:
+            for fmt in selected_formats:
+                filename = f'code.{fmt}'
+                zf.writestr(filename, code)
+
+        # Build response
+        response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="code-{datetime.now().isoformat()}.zip"'
+        return response
 
     

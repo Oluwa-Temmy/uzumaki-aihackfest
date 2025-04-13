@@ -17,40 +17,52 @@
         class="d-none"
         accept="image/jpeg,image/png,application/pdf"
     />
-
-    <!-- Question 1 -->
-    <label for="language" class="form-label">What type of image is this</label>
-    <select class="form-select" id="language" name="language">
-        <option value="html">HTML</option>
-        <option value="react">React</option>
-        <option value="javascript">JavaScript</option>
-    </select>
-
     <div class="progress d-none mb-3">
         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
+    <button type="submit" class="btn btn-primary">Upload New</button>
+    
 </form>
+{% if html %}
+<form action="{% url "trans_web" %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- Hidden input for pre-uploaded file -->
+    <input
+    type="hidden"
+    id="hiddenFileInput"
+    name="file"
+    value="{{ data }}"
+    />
+    <button type="submit" class="btn btn-primary" id="regenerateBtn">Regenerate</button>
+    <p>{{ data }}</p>
+</form>
+{% endif %}
+
 
 <iframe srcdoc="<p>Previewed content will appear here</p>" sandbox id="previewWindow" class="previewWindow border border-primary rounded mt-3 w-100" style="height: 75vh;"></iframe>
 {% if html %}
-<form>
-    <p>Downloadable formats Select all that you want</p>
-    <div>
-        <label>HTML</label>
-        <input type="checkbox" class="form-check-input"/>
+<form action="{% url "download" %}" method="post">
+    {% csrf_token %}
+    <p>Downloadable formats — select all that you want:</p>
 
-        <label>React</label>
-        <input type="checkbox" class="form-check-input"/>
-
-        <label>Javascript</label>
-        <input type="checkbox" class="form-check-input"/>
+    <div class="form-check">
+        <input type="checkbox" name="format" value="html" class="form-check-input" id="formatHtml">
+        <label class="form-check-label" for="formatHtml">HTML</label>
     </div>
-    <button >Download Code</button>
+
+    <div class="form-check">
+        <input type="checkbox" name="format" value="jsx" class="form-check-input" id="formatReact">
+        <label class="form-check-label" for="formatReact">React</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" name="format" value="js" class="form-check-input" id="formatJs">
+        <label class="form-check-label" for="formatJs">JavaScript</label>
+    </div>
+    <input value="{% if lang %}{{ lang }}{% endif %}" hidden/>
+    <button class="btn btn-success mt-3" type="submit">Download Code</button>
 </form>
-<div id="editorMonaco">
-Cool
-</div>
+
 
 {% endif %}
 
@@ -80,4 +92,15 @@ Cool
         {% endif %}
     });
 </script>
+<script>
+    document.getElementById("regenerateBtn")?.addEventListener("click", function (e) {
+        // Hide file input
+        document.getElementById("formFile").disabled = true;
+        document.getElementById("formFile").classList.add("d-none");
+    
+        // Enable hidden input
+        document.getElementById("hiddenFileInput").classList.remove("d-none");
+    });
+    </script>
+    
 {% endblock js_body %}
