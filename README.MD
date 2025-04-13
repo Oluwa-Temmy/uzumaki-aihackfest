@@ -1,5 +1,7 @@
 # Team Uzumaki
 
 # Transcodeinential
-This web app takes code and converts it to other code.
-As well as images to code
+This is a webapplication that turns images into usable components like html, react, or javascript
+
+# Third Party
+Google Gemini API
