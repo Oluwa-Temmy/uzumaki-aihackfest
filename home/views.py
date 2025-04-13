@@ -6,6 +6,9 @@ from urllib.parse import quote_plus, urlencode
 from authlib.integrations.django_client import OAuth
 from google import genai
 import PIL.Image as Image
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+import re
 
 oauth = OAuth()
 oauth.register(
@@ -61,16 +64,31 @@ def trans_web(request):
     elif request.method == "POST":
         data = request.FILES.get("file")
         html = None
-        
+
         if data is not None:
             image = Image.open(data)
+            prompt = """
+                Translate this image to Javascript
+                
+                Do not describe it simply just provide html for this image
+                Please add comments to the code for just describing different parts of the code.
+                For things that cannot be generated put a placeholder like for icons, images, etc.
+
+                Try and make it more visually appealing if it has to
+                Remove the ```html```
+            """
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
-                contents=["In HTML tell me what this image is", image]
+                contents=[
+                prompt,
+                image,
+                "Identify the 2 main theme colors in css style tags"
+                ]
             )
-
-            html = response.text
+            raw_html = response.text
+            cleaned = re.sub(r'^```html\s*', '', raw_html.strip(), flags=re.IGNORECASE)
+            html = re.sub(r'```$', '', cleaned.strip())
         return render(request, 'home/trans_web.html', context={
             "data": data,
-            "html": html,
+            "html": html
         })

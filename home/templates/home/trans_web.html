@@ -17,20 +17,41 @@
         class="d-none"
         accept="image/jpeg,image/png,application/pdf"
     />
-      <div class="progress d-none mb-3">
+
+    <!-- Question 1 -->
+    <label for="language" class="form-label">What type of image is this</label>
+    <select class="form-select" id="language" name="language">
+        <option value="html">HTML</option>
+        <option value="react">React</option>
+        <option value="javascript">JavaScript</option>
+    </select>
+
+    <div class="progress d-none mb-3">
         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-      </div>
-      <button type="submit" class="btn btn-primary">Upload</button>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
 </form>
 
-<div class="previewWindow border border-primary rounded p-4 mt-3" >
-    Preview will appear here
-    {% if data %}
-        {{ data }}
-    {% endif %}
+<iframe srcdoc="<p>Previewed content will appear here</p>" sandbox id="previewWindow" class="previewWindow border border-primary rounded mt-3 w-100" style="height: 75vh;"></iframe>
+{% if html %}
+<div>
+    <p>HTML</p>
 </div>
+{% endif %}
+
 {% endblock content %}
 
 {% block js_body %}
+
 <script src="{% static "js/home.js" %}"></script>
+<script>
+    $(document).ready(function(){
+        var htmlCnt = `{{ html|escapejs|safe }}`
+        var iframe = document.getElementById("previewWindow")
+        {% if html %}
+            iframe.srcdoc = htmlCnt;
+        {% endif %}
+        
+    });
+</script>
 {% endblock js_body %}

@@ -69,3 +69,4 @@ const dropZone = document.getElementById('dropZone')
         ? formFile.files[0].name
         : 'Drag and drop a file here or click to select'
   }
+
