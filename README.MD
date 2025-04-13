@@ -7,10 +7,10 @@ Solo Dev
 This is a webapplication that turns images into usable components like html, react, or javascript
 
 # Installation
-`git clone https://github.com/Oluwa-Temmy/uzumaki-aihackfest.git`
-`pip install -r requirements.txt`
-`python manage.py migrate`
-`python manage.py runserver`
+`git clone https://github.com/Oluwa-Temmy/uzumaki-aihackfest.git`</br>
+`pip install -r requirements.txt`</br>
+`python manage.py migrate`</br>
+`python manage.py runserver`</br>
 
 # Third Party
 Google Gemini API
