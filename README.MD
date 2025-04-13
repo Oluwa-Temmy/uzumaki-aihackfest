@@ -12,5 +12,12 @@ This is a webapplication that turns images into usable components like html, rea
 `python manage.py migrate`</br>
 `python manage.py runserver`</br>
 
+# Built with
+Django Web Framework
+HTML
+Javascript
+
 # Third Party
 Google Gemini API
+
+
