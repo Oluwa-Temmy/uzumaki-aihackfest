@@ -1,6 +1,9 @@
+{% load static %}
 <!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="{% url "index" %}">Transcodeinential</a>
+    <a class="navbar-brand" href="{% url "index" %}">
+        <img src="{% static 'images\logo_trans.png' %}" alt="Logo" width="{% widthratio 30 100 400 %}px">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
     <span class="navbar-toggler-icon"></span>
     </button>

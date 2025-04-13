@@ -67,8 +67,8 @@ def trans_web(request):
 
         if data is not None:
             image = Image.open(data)
-            prompt = """
-                Translate this image to Javascript
+            prompt = f"""
+                Translate this image to HTML, Javascript, React seperated by: <!--Seperate-->
                 
                 Do not describe it simply just provide html for this image
                 Please add comments to the code for just describing different parts of the code.
@@ -88,7 +88,21 @@ def trans_web(request):
             raw_html = response.text
             cleaned = re.sub(r'^```html\s*', '', raw_html.strip(), flags=re.IGNORECASE)
             html = re.sub(r'```$', '', cleaned.strip())
+            lang = html.split('<!--Seperate-->')[1]
+            print(html.split('<!--Seperate-->')[1])
         return render(request, 'home/trans_web.html', context={
             "data": data,
-            "html": html
+            "html": html,
+            "data": data,
+            "lang": lang
         })
+
+from django.http import HttpResponse
+from datetime import datetime
+def download(request):
+    content = "<html><body><h1>Hello from Django!</h1></body></html>"
+    response = HttpResponse(content, content_type='text/html')
+    response['Content-Disposition'] = f'attachment; filename="code-{datetime.now().isoformat()}.html"'
+    return response
+
+    
