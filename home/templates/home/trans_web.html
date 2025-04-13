@@ -34,9 +34,24 @@
 
 <iframe srcdoc="<p>Previewed content will appear here</p>" sandbox id="previewWindow" class="previewWindow border border-primary rounded mt-3 w-100" style="height: 75vh;"></iframe>
 {% if html %}
-<div>
-    <p>HTML</p>
+<form>
+    <p>Downloadable formats Select all that you want</p>
+    <div>
+        <label>HTML</label>
+        <input type="checkbox" class="form-check-input"/>
+
+        <label>React</label>
+        <input type="checkbox" class="form-check-input"/>
+
+        <label>Javascript</label>
+        <input type="checkbox" class="form-check-input"/>
+    </div>
+    <button >Download Code</button>
+</form>
+<div id="editorMonaco">
+Cool
 </div>
+
 {% endif %}
 
 {% endblock content %}
@@ -44,6 +59,18 @@
 {% block js_body %}
 
 <script src="{% static "js/home.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/editor/editor.main.js" integrity="sha512-Rvm80pldXwjZQPHcW9Dx3U8pygTafC25yXwrxrPC6ZuNVgBsR2BN2pFAU2ImvYYeFcUaKo7bRcf7KxHD+LMp6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    require.config({ paths: { 'vs':'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/'}});
+    require(['vs/editor/editor.main'], function(){
+        monaco.editor.create(document.getElementById('editorMonaco'),
+        {
+            value: '<h1>Hello Monaco!</h1>',
+            language: 'html',
+            theme: 'vs-dark'
+        });
+    });
+</script>
 <script>
     $(document).ready(function(){
         var htmlCnt = `{{ html|escapejs|safe }}`
@@ -51,7 +78,6 @@
         {% if html %}
             iframe.srcdoc = htmlCnt;
         {% endif %}
-        
     });
 </script>
 {% endblock js_body %}
